@@ -1,7 +1,7 @@
 import Header from '../Header'
 import CartListView from '../CartListView'
 import CartContext from '../../context/CartContext'
-
+import Checkout from '../Checkout'
 import './index.css'
 import EmptyCartView from '../EmptyCartView'
 
@@ -12,19 +12,20 @@ const Cart = () => (
       const cartEmpty = cartList.length === 0
 
       return (
-        <>
-          <Header />
-          {cartEmpty ? (
-            <EmptyCartView />
-          ) : (
-            <div className="cart-container">
-              <div className="cart-content-container">
-                <h1 className="cart-heading">My Cart</h1>
-                <CartListView />
+        <div className="cart-bg-container">
+          <div className="header-cartListView">
+            <Header />
+            {cartEmpty ? (
+              <EmptyCartView />
+            ) : (
+              <div className="cart-container">
+                <div className="cart-content-container">
+                  <h1 className="cart-heading">My Cart</h1>
+                  <CartListView />
+                </div>
               </div>
-            </div>
-          )}
-          {/* {cartEmpty && <EmptyCartView />}(
+            )}
+            {/* {cartEmpty && <EmptyCartView />}(
           <div className="cart-container">
             <div className="cart-content-container">
               <h1 className="cart-heading">My Cart</h1>
@@ -32,7 +33,12 @@ const Cart = () => (
             </div>
           </div>
           ) */}
-        </>
+          </div>
+
+          <div className="checkout-container">
+            <Checkout />
+          </div>
+        </div>
       )
     }}
   </CartContext.Consumer>

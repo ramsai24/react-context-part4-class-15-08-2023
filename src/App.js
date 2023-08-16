@@ -9,13 +9,12 @@ import Cart from './components/Cart'
 import NotFound from './components/NotFound'
 import ProtectedRoute from './components/ProtectedRoute'
 import CartContext from './context/CartContext'
-import QuantityContext from './context/QuantityContext'
+
 import './App.css'
 
 class App extends Component {
   state = {
     cartList: [],
-    quantity: 1,
   }
 
   addCartItem = product => {
@@ -24,12 +23,51 @@ class App extends Component {
     const check = cartList.every(each => each.id !== product.id)
     console.log(check)
 
+    const updateQuantityOfItemInCartList = cartList.map(each => {
+      if (each.id === product.id) {
+        return {...each, quantity: each.quantity + product.quantity}
+      }
+      return each
+    })
+
     if (check) {
-      this.setState(prevState => ({
-        cartList: [...prevState.cartList, product],
-        quantity: 1,
-      }))
+      this.setState(prevState => ({cartList: [...prevState.cartList, product]}))
+    } else {
+      this.setState({cartList: updateQuantityOfItemInCartList})
     }
+  }
+
+  incrementQuantity = id => {
+    const {cartList} = this.state
+    const updateQuantityOfItemInCartList = cartList.map(each => {
+      if (each.id === id) {
+        return {...each, quantity: each.quantity + 1}
+      }
+      return each
+    })
+    // console.log(updateQuantityOfItemInCartList)
+    this.setState({cartList: updateQuantityOfItemInCartList})
+  }
+
+  decrementQuantity = id => {
+    const {cartList} = this.state
+
+    const returnDecreaseQuantity = quantity => {
+      if (quantity > 1) {
+        return quantity - 1
+      }
+
+      return quantity
+    }
+
+    const updateQuantityOfItemInCartList = cartList.map(each => {
+      if (each.id === id) {
+        return {...each, quantity: returnDecreaseQuantity(each.quantity)}
+      }
+      return each
+    })
+
+    this.setState({cartList: updateQuantityOfItemInCartList})
   }
 
   deleteCartItem = id => {
@@ -39,51 +77,34 @@ class App extends Component {
     this.setState({cartList: filteredList})
   }
 
-  decrementQuantity = () => {
-    const {quantity} = this.state
-    if (quantity > 1) {
-      this.setState(prevState => ({quantity: prevState.quantity - 1}))
-    }
-  }
-
-  incrementQuantity = () => {
-    this.setState(prevState => ({quantity: prevState.quantity + 1}))
-  }
-
   render() {
-    const {cartList, quantity} = this.state
+    const {cartList} = this.state
 
     return (
       <BrowserRouter>
-        <QuantityContext.Provider
+        <CartContext.Provider
           value={{
-            quantity,
-            decrementQuantity: this.decrementQuantity,
+            cartList,
+            addCartItem: this.addCartItem,
+            deleteCartItem: this.deleteCartItem,
             incrementQuantity: this.incrementQuantity,
+            decrementQuantity: this.decrementQuantity,
           }}
         >
-          <CartContext.Provider
-            value={{
-              cartList,
-              addCartItem: this.addCartItem,
-              deleteCartItem: this.deleteCartItem,
-            }}
-          >
-            <Switch>
-              <Route exact path="/login" component={LoginForm} />
-              <ProtectedRoute exact path="/" component={Home} />
-              <ProtectedRoute exact path="/products" component={Products} />
-              <ProtectedRoute
-                exact
-                path="/products/:id"
-                component={ProductItemDetails}
-              />
-              <ProtectedRoute exact path="/cart" component={Cart} />
-              <Route path="/not-found" component={NotFound} />
-              <Redirect to="not-found" />
-            </Switch>
-          </CartContext.Provider>
-        </QuantityContext.Provider>
+          <Switch>
+            <Route exact path="/login" component={LoginForm} />
+            <ProtectedRoute exact path="/" component={Home} />
+            <ProtectedRoute exact path="/products" component={Products} />
+            <ProtectedRoute
+              exact
+              path="/products/:id"
+              component={ProductItemDetails}
+            />
+            <ProtectedRoute exact path="/cart" component={Cart} />
+            <Route path="/not-found" component={NotFound} />
+            <Redirect to="not-found" />
+          </Switch>
+        </CartContext.Provider>
       </BrowserRouter>
     )
   }
