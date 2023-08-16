@@ -34,7 +34,7 @@ const Cart = () => (
           <div className="cart-container">
             <div className="cart-content-container">
               <h1 className="cart-heading">My Cart</h1>
-              <CartListView />
+              <CartListView /> //no use of this code
             </div>
           </div>
           ) */}
