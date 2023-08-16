@@ -49,6 +49,12 @@
   }
 }
 
+.cart-Title-removeAllBtn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .checkout-container {
   align-self: flex-end;
   margin: 20px;

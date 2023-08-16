@@ -17,6 +17,10 @@ class App extends Component {
     cartList: [],
   }
 
+  removeAll = () => {
+    this.setState({cartList: []})
+  }
+
   addCartItem = product => {
     const {cartList} = this.state
 
@@ -89,6 +93,7 @@ class App extends Component {
             deleteCartItem: this.deleteCartItem,
             incrementQuantity: this.incrementQuantity,
             decrementQuantity: this.decrementQuantity,
+            removeAll: this.removeAll,
           }}
         >
           <Switch>

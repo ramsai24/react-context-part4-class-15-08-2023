@@ -8,7 +8,7 @@ import EmptyCartView from '../EmptyCartView'
 const Cart = () => (
   <CartContext.Consumer>
     {value => {
-      const {cartList} = value
+      const {cartList, removeAll} = value
       const cartEmpty = cartList.length === 0
 
       return (
@@ -20,7 +20,12 @@ const Cart = () => (
             ) : (
               <div className="cart-container">
                 <div className="cart-content-container">
-                  <h1 className="cart-heading">My Cart</h1>
+                  <div className="cart-Title-removeAllBtn">
+                    <h1 className="cart-heading">My Cart</h1>
+                    <button type="button" onClick={removeAll}>
+                      Remove all
+                    </button>
+                  </div>
                   <CartListView />
                 </div>
               </div>

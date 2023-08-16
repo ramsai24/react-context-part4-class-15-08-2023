@@ -16,11 +16,13 @@ const Checkout = () => (
       }
 
       return (
-        <div className="total-cartLen-checkoutBtn-container">
-          <h1>Order Total :{orderTotal()}/-</h1>
-          <p>{cartList.length} Items in Cart</p>
-          <button type="button">CheckOut</button>
-        </div>
+        cartList.length > 0 && (
+          <div className="total-cartLen-checkoutBtn-container">
+            <h1>Order Total :{orderTotal()}/-</h1>
+            <p>{cartList.length} Items in Cart</p>
+            <button type="button">CheckOut</button>
+          </div>
+        )
       )
     }}
   </CartContext.Consumer>
